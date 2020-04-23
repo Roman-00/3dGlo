@@ -92,7 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			popupContent = document.querySelector('.popup-content'),
 			popupBtn = document.querySelectorAll('.popup-btn'),
 			popupClose = document.querySelector('.popup-close'),
-			popupWidth = document.documentElement.clientWidth;;
+			popupWidth = document.documentElement.clientWidth;
 
 		const animatePopup = () => animate({
 			duration: 300,
@@ -109,14 +109,18 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 
 		popupBtn.forEach(elem => {
-			if(popupWidth > 768 ) {
-				animatePopup();
-			} else {
+			if(popupWidth < 768) {
 				elem.addEventListener('click', () => {
 					popup.style.display = 'block';
 				});
+			} else {
+				elem.addEventListener('click', () => {
+					popup.style.display = 'block';
+					animatePopup();
+				});
 			}
 		});
+
 		popupClose.addEventListener('click', () => {
 			popup.style.display = 'none';
 		});
