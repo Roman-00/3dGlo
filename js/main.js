@@ -67,20 +67,45 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 	toggleMenu();
 
+	// Amimate
+	function animate({ timing, draw, duration }) {
+		const start = performance.now();
+		requestAnimationFrame(function animate(time) {
+			// timeFraction изменяется от 0 до 1
+			let timeFraction = (time - start) / duration;
+			if (timeFraction > 1) timeFraction = 1;
+
+			// вычисление текущего состояния анимации
+			const progress = timing(timeFraction);
+
+			draw(progress); // отрисовать её
+
+			if (timeFraction < 1) {
+				requestAnimationFrame(animate);
+			}
+		});
+	}
+
 	//popup
 	const togglePopUp = () => {
-		let popup = document.querySelector('.popup'),
-			count = 0;
-		const	popupBtn = document.querySelectorAll('.popup-btn'),
+		const popup = document.querySelector('.popup'),
+			popupContent = document.querySelector('.popup-content'),
+			popupBtn = document.querySelectorAll('.popup-btn'),
 			popupClose = document.querySelector('.popup-close');
 
-		const animatePopup = () => {
-			count++;
-			popup.style.top = count + 'px';
-			if(count < 350) {
-				setTimeout(animatePopup, 10);
+		const animatePopup = () => animate({
+			duration: 300,
+			timing(timeFraction) {
+				return timeFraction;
+			},
+			draw(progress) {
+				popupContent.style.top = '0%';
+				popup.style.opacity = 0.1;
+				popup.style.display = 'block';
+				popupContent.style.top = progress * 25 + '%';
+				popup.style.opacity = progress * 1;
 			}
-		};
+		});
 
 		popupBtn.forEach(elem => {
 			elem.addEventListener('click', () => {
