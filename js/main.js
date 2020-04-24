@@ -49,21 +49,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//Меню
 	const toggleMenu = () => {
-		const btnMenu = document.querySelector('.menu'),
-			menu = document.querySelector('menu'),
-			closeBtn = document.querySelector('.close-btn'),
-			menuItems = menu.querySelectorAll('ul>li');
-
-		const heandlerMenu = () => {
-			menu.classList.toggle('active-menu');
-		};
-
-		btnMenu.addEventListener('click', heandlerMenu);
-
-		closeBtn.addEventListener('click', heandlerMenu);
-
-		menuItems.forEach(elem => elem.addEventListener('click', heandlerMenu));
-
+		const btnMenu = document.querySelector('menu');
+		document.body.addEventListener('click', event => {
+			const target = event.target;
+			if (target && target.closest('.menu')) {
+				btnMenu.classList.add('active-menu');
+			} else if (target && (target.tagName === 'A' || !target.classList.contains('active-menu'))) {
+				btnMenu.classList.remove('active-menu');
+			}
+		});
 	};
 	toggleMenu();
 
@@ -91,7 +85,6 @@ window.addEventListener('DOMContentLoaded', () => {
 		const popup = document.querySelector('.popup'),
 			popupContent = document.querySelector('.popup-content'),
 			popupBtn = document.querySelectorAll('.popup-btn'),
-			popupClose = document.querySelector('.popup-close'),
 			popupWidth = document.documentElement.clientWidth;
 
 		const animatePopup = () => animate({
@@ -109,22 +102,65 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 
 		popupBtn.forEach(elem => {
-			if(popupWidth < 768) {
-				elem.addEventListener('click', () => {
-					popup.style.display = 'block';
-				});
+			if (popupWidth > 768) {
+				elem.addEventListener('click', animatePopup);
 			} else {
 				elem.addEventListener('click', () => {
-					popup.style.display = 'block';
-					animatePopup();
+					elem.addEventListener('click', () => popup.style.display = 'block');
 				});
 			}
 		});
 
-		popupClose.addEventListener('click', () => {
-			popup.style.display = 'none';
+		popup.addEventListener('click', event => {
+			let target = event.target;
+			if (target.classList.contains('popup-close')) {
+				popup.style.display = 'none';
+			} else {
+				target = target.closest('.popup-content');
+				if (!target) {
+					popup.style.display = 'none';
+				}
+			}
 		});
+
+		/*popupClose.addEventListener('click', () => {
+			popup.style.display = 'none';
+		});*/
 	};
 
 	togglePopUp();
+
+	//Табы
+	const tabs = () => {
+		const tabHeader = document.querySelector('.service-header'),
+			tab = tabHeader.querySelectorAll('.service-header-tab'),
+			tabContent = document.querySelectorAll('.service-tab');
+
+		const toogleTabContent = index => {
+			for (let i = 0; i < tabContent.length; i++) {
+				if (index === i) {
+					tab[i].classList.add('active');
+					tabContent[i].classList.remove('d-none');
+				} else {
+					tab[i].classList.remove('active');
+					tabContent[i].classList.add('d-none');
+				}
+			}
+		};
+
+		tabHeader.addEventListener('click', event => {
+			let target = event.target;
+			target = target.closest('.service-header-tab');
+			if (target) {
+				// eslint-disable-next-line no-loop-func
+				tab.forEach((item, i) => {
+					if (item === target) {
+						toogleTabContent(i);
+					}
+				});
+			}
+		});
+	};
+
+	tabs();
 });
