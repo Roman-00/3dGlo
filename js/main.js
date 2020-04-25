@@ -1,6 +1,42 @@
 // eslint-disable-next-line strict
 'use stricts';
 window.addEventListener('DOMContentLoaded', () => {
+
+	// Плавная прокрутка по ссылкам
+	const smoothScrolling = () => {
+		const anchors = document.querySelectorAll('menu a[href^="#"]'),
+			anchorsBtn = document.querySelectorAll('a[href="#service-block"]');
+
+
+		for (const anchor of anchors) {
+			anchor.addEventListener('click', e => {
+				e.preventDefault();
+
+				const blockID = anchor.getAttribute('href').substr(1);
+
+				document.getElementById(blockID).scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				});
+			});
+		}
+
+		for (const anchorButton of anchorsBtn) {
+			anchorButton.addEventListener('click', e => {
+				e.preventDefault();
+
+				const blockID = anchorButton.getAttribute('href').substr(1);
+
+				document.getElementById(blockID).scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				});
+			});
+		}
+	};
+
+	smoothScrolling();
+
 	// Timer
 	const countTimer = deadline => {
 		const timerHours = document.querySelector('#timer-hours'),
@@ -261,23 +297,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	slider();
 
-	// Плавная прокрутка по ссылкам
-	const smoothScrolling = () => {
-		const anchors = document.querySelectorAll('a[href*="#"]');
-
-		for (const anchor of anchors) {
-			anchor.addEventListener('click', e => {
-				e.preventDefault();
-
-				const blockID = anchor.getAttribute('href').substr(1);
-
-				document.getElementById(blockID).scrollIntoView({
-					behavior: 'smooth',
-					block: 'start'
-				});
-			});
-		}
-	};
-
-	smoothScrolling();
 });
