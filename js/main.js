@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		}, 1000);
 
 	};
-	countTimer('23 April 2020');
+	countTimer('30 April 2020');
 
 
 	//Меню
