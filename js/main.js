@@ -297,4 +297,38 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	slider();
 
+	// Function Our Teams photo replacement
+	const photoReplacement = () => {
+		const imgTeams = document.querySelectorAll('#command .row img');
+
+		let url;
+		imgTeams.forEach(elem => {
+
+			elem.addEventListener('mouseenter', event => {
+				url = event.target.src;
+				const target = event.target;
+				target.src = target.getAttribute('data-img');
+			});
+
+			elem.addEventListener('mouseout', event => {
+				const target = event.target;
+				target.src = url;
+			});
+		});
+	};
+
+	photoReplacement();
+
+	//validation calc
+	const validationCalc = () => {
+		const inputCalc = document.querySelectorAll('input[class*="calc-item calc"]');
+		inputCalc.forEach(item => {
+			item.addEventListener('input', () => {
+				item.value = item.value.replace(/\D/g, '');
+			});
+		});
+	};
+
+	validationCalc();
+
 });
