@@ -4,35 +4,28 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// Плавная прокрутка по ссылкам
 	const smoothScrolling = () => {
-		const anchors = document.querySelectorAll('menu a[href^="#"]'),
-			anchorsBtn = document.querySelectorAll('a[href="#service-block"]');
+		const smoothScroll = event => {
+			const anchor = event.currentTarget.href.split('#')[1];
 
+			if (anchor === '') {
+				return;
+			}
+			const target = document.querySelector(`#${anchor}`);
 
-		for (const anchor of anchors) {
-			anchor.addEventListener('click', e => {
-				e.preventDefault();
+			if (target) {
+				event.preventDefault();
+				const targetTop = target.getBoundingClientRect().y;
+				const targetTopScroll = document.documentElement.scrollTop;
+				const topScroll = targetTop + targetTopScroll;
 
-				const blockID = anchor.getAttribute('href').substr(1);
-
-				document.getElementById(blockID).scrollIntoView({
-					behavior: 'smooth',
-					block: 'start'
+				window.scrollTo({
+					top: topScroll,
+					behavior: "smooth"
 				});
-			});
-		}
-
-		for (const anchorButton of anchorsBtn) {
-			anchorButton.addEventListener('click', e => {
-				e.preventDefault();
-
-				const blockID = anchorButton.getAttribute('href').substr(1);
-
-				document.getElementById(blockID).scrollIntoView({
-					behavior: 'smooth',
-					block: 'start'
-				});
-			});
-		}
+			}
+		};
+		const linkAnchors = document.querySelectorAll('a[href^="#"]');
+		linkAnchors.forEach(item => item.addEventListener('click', smoothScroll));
 	};
 
 	smoothScrolling();
@@ -98,7 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	toggleMenu();
 
 	// Amimate
-	function animate({ timing, draw, duration }) {
+	const animate = ({ timing, draw, duration }) => {
 		const start = performance.now();
 		requestAnimationFrame(function animate(time) {
 			// timeFraction изменяется от 0 до 1
@@ -114,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				requestAnimationFrame(animate);
 			}
 		});
-	}
+	};
 
 	//popup
 	const togglePopUp = () => {
@@ -137,13 +130,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
-		popupBtn.forEach(elem => {
+		popupBtn.forEach(item => {
 			if (popupWidth > 768) {
-				elem.addEventListener('click', animatePopup);
+				item.addEventListener('click', animatePopup);
 			} else {
-				elem.addEventListener('click', () => {
-					elem.addEventListener('click', () => popup.style.display = 'block');
-				});
+				item.addEventListener('click', () => popup.style.display = 'block');
 			}
 		});
 
@@ -158,10 +149,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 			}
 		});
-
-		/*popupClose.addEventListener('click', () => {
-			popup.style.display = 'none';
-		});*/
 	};
 
 	togglePopUp();
@@ -299,7 +286,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// Function Our Teams photo replacement
 	const photoReplacement = () => {
-		const imgTeams = document.querySelectorAll('#command .row img');
+		const imgTeams = document.querySelectorAll('.command__photo');
 
 		let url;
 		imgTeams.forEach(elem => {
@@ -310,9 +297,8 @@ window.addEventListener('DOMContentLoaded', () => {
 				target.src = target.getAttribute('data-img');
 			});
 
-			elem.addEventListener('mouseout', event => {
-				const target = event.target;
-				target.src = url;
+			elem.addEventListener('mouseleave', event => {
+				event.target.src = url;
 			});
 		});
 	};
@@ -324,7 +310,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const inputCalc = document.querySelectorAll('input[class*="calc-item calc"]');
 		inputCalc.forEach(item => {
 			item.addEventListener('input', () => {
-				item.value = item.value.replace(/\D/g, '');
+				item.value = item.value.replace(/\D/g);
 			});
 		});
 	};
