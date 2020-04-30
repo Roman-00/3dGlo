@@ -419,6 +419,19 @@
 	</div>
 </div>
 
+
+<!-- Подключения валидатора -->
+<script src="plugins/validator.js"></script>
+<script>
+	const valid = new Validator ({
+		selector: '#form1',
+		pattern: {},
+		method: {}
+	});
+
+	valid.init();
+</script>
+<!-- Подключение нашего скрипта -->
 <script src="js/main.js"></script>
 </body>
 </html>
