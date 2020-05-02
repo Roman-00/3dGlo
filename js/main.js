@@ -383,7 +383,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			</div>`,
 			successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-		const form = document.getElementById(formId);
+		const form = document.getElementById(formId),
+			formTag = document.querySelectorAll('form');
 
 		const statusMessage = document.createElement('div');
 		statusMessage.style.cssText = 'font-size: 2rem;';
@@ -424,12 +425,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
-		form.forEach(forms => {
-			forms.addEventListener('input', event => {
+		formTag.forEach(form => {
+			form.addEventListener('input', event => {
 				const target = event.target;
 
 				if (target.name === 'user_phone') {
-					target.value = target.value.replace(/^\+?[78]([-()]*\d){10}$/, '');
+					target.value = target.value.replace(/[^\+\d]/g, '');
 				}
 
 				if (target.name === 'user_name' || target.name === 'user_message') {
