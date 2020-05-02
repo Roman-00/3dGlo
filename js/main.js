@@ -363,4 +363,83 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	calc(100);
 
+	// Send Form
+	const sendForm = formId => {
+		const errorMessage = 'Что-то пошло не так...',
+			loadMessage = `
+			<div class='sk-circle-bounce'>
+				<div class='sk-child sk-circle-1'></div>
+				<div class='sk-child sk-circle-2'></div>
+				<div class='sk-child sk-circle-3'></div>
+				<div class='sk-child sk-circle-4'></div>
+				<div class='sk-child sk-circle-5'></div>
+				<div class='sk-child sk-circle-6'></div>
+				<div class='sk-child sk-circle-7'></div>
+				<div class='sk-child sk-circle-8'></div>
+				<div class='sk-child sk-circle-9'></div>
+				<div class='sk-child sk-circle-10'></div>
+				<div class='sk-child sk-circle-11'></div>
+				<div class='sk-child sk-circle-12'></div>
+			</div>`,
+			successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+		const form = document.getElementById(formId);
+
+		const statusMessage = document.createElement('div');
+		statusMessage.style.cssText = 'font-size: 2rem;';
+
+		const postData = (body, outputData, errorData) => {
+			const request = new XMLHttpRequest();
+			request.addEventListener('readystatechange', () => {
+				if (request.readyState !== 4) {
+					return;
+				}
+
+				if (request.status === 200) {
+					outputData();
+				} else {
+					errorData(request.status);
+				}
+			});
+			request.open('POST', './server.php');
+			request.setRequestHeader('Content-Type', 'application/json');
+			request.send(JSON.stringify(body));
+		};
+
+		form.addEventListener('submit', event => {
+			event.preventDefault();
+			form.appendChild(statusMessage);
+			statusMessage.innerHTML = loadMessage;
+			const formData = new FormData(form);
+			const body = {};
+			formData.forEach((val, key) => {
+				body[key] = val;
+			});
+			postData(body, () => {
+				statusMessage.textContent = successMessage;
+				form.reset();
+			}, error => {
+				statusMessage.textContent = errorMessage;
+				console.error(error);
+			});
+		});
+
+		form.forEach(forms => {
+			forms.addEventListener('input', event => {
+				const target = event.target;
+
+				if (target.name === 'user_phone') {
+					target.value = target.value.replace(/^\+?[78]([-()]*\d){10}$/, '');
+				}
+
+				if (target.name === 'user_name' || target.name === 'user_message') {
+					target.value = target.value.replace(/[^а-я ]/gi, '');
+				}
+			});
+		});
+	};
+	sendForm('form1');
+	sendForm('form2');
+	sendForm('form3');
+
 });
