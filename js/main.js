@@ -68,6 +68,9 @@ window.addEventListener('DOMContentLoaded', () => {
 				timerHours.textContent = '00';
 				timerMinutes.textContent = '00';
 				timerSeconds.textContent = '00';
+
+				const deadline = new Date(Date.parse(new Date()) + 24 * 60 * 60 * 1000);
+				countTimer(deadline);
 			}
 		}, 1000);
 
