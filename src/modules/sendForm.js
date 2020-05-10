@@ -24,7 +24,11 @@ const sendForm = formId => {
 		formTag = document.querySelectorAll('form');
 
 	const statusMessage = document.createElement('div');
-	statusMessage.style.cssText = 'font-size: 2rem;';
+	statusMessage.style.cssText = `
+		font-size: 2rem;
+		color: #ffffff;
+		z-index: 999;
+	`;
 
 	const postData = body => fetch('./server.php', {
 		method: 'POST',
@@ -50,10 +54,16 @@ const sendForm = formId => {
 				}
 				statusMessage.textContent = successMessage;
 				form.reset();
+				setTimeout(() => {
+					statusMessage.textContent = '';
+				}, 3000);
 			})
 			.catch(error => {
 				statusMessage.textContent = errorMessage;
 				console.error(error);
+				setTimeout(() => {
+					statusMessage.textContent = '';
+				}, 3000);
 			});
 	});
 

@@ -2,7 +2,18 @@
 'use strict';
 
 const photoReplacement = () => {
-	const imgTeams = document.querySelectorAll('.command__photo');
+	const command = document.querySelector('.command');
+		
+	command.onmouseover = (event) => {
+		let target = event.target; 
+		target.dataset.newsrc = target.src;
+		target.src = target.dataset.img;
+	};
+	command.onmouseout = (event) => {
+		let target = event.target; 
+		target.src =  target.dataset.newsrc;
+	};
+	/*const imgTeams = document.querySelectorAll('.command__photo');
 
 	let url;
 	imgTeams.forEach(elem => {
@@ -16,7 +27,7 @@ const photoReplacement = () => {
 		elem.addEventListener('mouseleave', event => {
 			event.target.src = url;
 		});
-	});
+	});*/
 };
 
 export default photoReplacement;
