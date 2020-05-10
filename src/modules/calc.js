@@ -31,6 +31,16 @@ const calc = (price = 100) => {
 		}
 
 		totalValue.textContent = total;
+
+		let i = 0;
+    const intervalId = setInterval(() => {
+      if (total >= i) {
+        totalValue.textContent = i;
+         i++;
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 2);
 	};
 
 	calcBlock.addEventListener('change', event => {
