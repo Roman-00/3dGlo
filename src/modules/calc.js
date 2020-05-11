@@ -9,6 +9,27 @@ const calc = (price = 100) => {
 		calcCount = document.querySelector('.calc-count'),
 		totalValue = document.getElementById('total');
 
+	let animateTotal;
+		const renderTotal = (total) => {
+			let startTotal = 50;
+	
+			clearInterval(animateTotal);
+	
+			if (calcType.options[calcType.selectedIndex] === 0) {
+				clearInterval(animateTotal);
+				startTotal = 0;
+			}
+	
+			animateTotal = setInterval(()=> {
+				startTotal += total.toString().length;
+				totalValue.textContent = Math.trunc(startTotal);
+				if (startTotal >= total) {
+					totalValue.textContent = Math.trunc(total);
+					clearInterval(animateTotal);
+				}
+		}, 10);
+	};
+
 	const countSum = () => {
 		let total = 0,
 			countValue = 1,
@@ -29,18 +50,8 @@ const calc = (price = 100) => {
 		if (typeValue && squareValue) {
 			total = price * typeValue * squareValue * countValue * dayValue;
 		}
-
 		totalValue.textContent = total;
-
-		let i = 0;
-    const intervalId = setInterval(() => {
-      if (total >= i) {
-        totalValue.textContent = i;
-         i++;
-      } else {
-        clearInterval(intervalId);
-      }
-    }, 2);
+		renderTotal(total);
 	};
 
 	calcBlock.addEventListener('change', event => {

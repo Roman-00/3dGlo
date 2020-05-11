@@ -7,7 +7,12 @@ const smoothScrolling = () => {
 				eachElements.addEventListener('click', (event) => {
           event.preventDefault();
 					const gotId = eachElements.getAttribute('href');
-					document.querySelector('' + gotId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+					if(gotId === '#'){
+						return;
+					} else {
+						document.querySelector('' + gotId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+						console.log(gotId);
+					}
 		}); 
 	});
 };
