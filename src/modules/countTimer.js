@@ -38,6 +38,6 @@ const countTimer = deadline => {
     }, 1000);
 };
 
-countTimer('15 may 2020');
+countTimer('18 june 2020');
 
 export default countTimer;
